@@ -7,12 +7,12 @@ import os
 
 #model=os.path.join(model_path,'BestModel_CLF_GBC_Keras.pkl')
 
-with open(model_path, 'rb') as f:
-    loaded_model = pickle.load(f)
+#with open(model_path, 'rb') as f:
+    #loaded_model = pickle.load(f)
 
 #scaler = loaded_model[0]
 #feature_selector = loaded_model[1]
-CS_model = loaded_model
+#CS_model = loaded_model
 
 from streamlit_option_menu import option_menu
 
@@ -23,6 +23,14 @@ with st.sidebar:
                             default_index=0)
     
 if selected == 'Klasifikasi':
+    
+    model='BestModel_CLF_GBC_Keras.pkl'
+    
+    with open(model, 'rb') as f:
+        loaded_model = pickle.load(f)
+        
+    CS_model = loaded_model
+    
     st.title('Klasifikasi')
 
     file = st.file_uploader("Masukkan File", type=["csv", "txt"])
@@ -124,6 +132,13 @@ if selected == 'Klasifikasi':
         st.write(f"Property tersebut diprediksi **{outcome[CS_model_prediction[0]]}**")
 
 if selected == 'Regresi':
+
+    model='SVR_price_model.pkl'
+    
+    with open(model, 'rb') as f:
+        loaded_model = pickle.load(f)
+
+    
     st.title('Regresi')
 
     st.write('Masukkan File')
@@ -218,7 +233,7 @@ if selected == 'Regresi':
     st.write(input_data)
 
     if st.button("Prediksi Harga"):
-        with open(model_path, 'rb') as f:
+        with open(model, 'rb') as f:
             regression_model = pickle.load(f)
 
         predicted_price = regression_model.predict([input_data])
